@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -ex
+
+docker build --target booking-service-app -t booking-service-app .
+docker build --target payment-service-app -t payment-service-app .
