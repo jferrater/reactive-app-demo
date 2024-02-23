@@ -27,10 +27,7 @@ curl http://localhost:8081/users
 ```
 In addition, an `/authorize_transaction` API for processing payment is also exposed. Sending payment request using curl:
 ```bash
-curl -H "Content-type: application/json" \ 
-      -X POST \
-      -d '{"email": "keerthi.lee@gmail.com","request-id": "TR001", "amount": 45.0}' \
-      http://localhost:8081/authorize_transaction
+curl -H "Content-type: application/json" -X POST -d '{"email": "keerthi.lee@gmail.com","request-id": "TR001", "amount": 45.0}' http://localhost:8081/authorize_transaction
 ```
 A sample response:
 ```bash
