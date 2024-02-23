@@ -21,7 +21,7 @@ FROM openjdk:17.0.1-jdk-slim AS booking-service-app
 
 RUN adduser --system --group app-user
 
-COPY --from=booking-service-build --chown=app-user:app-user /home/gradle/booking-service/build/libs/app-*.jar app.jar
+COPY --from=booking-service-build --chown=app-user:app-user /home/gradle/booking-service/build/libs/*-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 USER app-user
@@ -32,7 +32,7 @@ FROM openjdk:17.0.1-jdk-slim AS payment-service-app
 
 RUN adduser --system --group app-user
 
-COPY --from=payment-service-build --chown=app-user:app-user /home/gradle/payment-service/build/libs/app-*.jar app.jar
+COPY --from=payment-service-build --chown=app-user:app-user /home/gradle/payment-service/build/libs/*-SNAPSHOT.jar app.jar
 
 EXPOSE 8081
 USER app-user
