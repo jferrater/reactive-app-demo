@@ -49,9 +49,11 @@ class PaymentServiceClientTest {
     void testAuthorizeTransaction() throws Exception {
         String email = "jolly.jae@gmail.com";
         String transactionId = "TR001";
-        TransactionRequest request = new TransactionRequest(email, transactionId, 450.0);
+        String firstName = "Jolly";
+        String lastName = "Jae";
+        TransactionRequest request = new TransactionRequest(email, transactionId, 450.0, firstName, lastName);
         String status = "APPROVED";
-        TransactionResponse mockResponse = new TransactionResponse(transactionId, email, status);
+        TransactionResponse mockResponse = new TransactionResponse(transactionId, email, firstName, lastName, status);
         mockPaymentServiceBackend.enqueue(new MockResponse()
                 .setBody(mapper.writeValueAsString(mockResponse))
                 .addHeader("Content-type", "application/json")
@@ -63,7 +65,7 @@ class PaymentServiceClientTest {
                 .assertNext(transactionResponse -> {
                     assertEquals(status, transactionResponse.getStatus());
                     assertEquals(email, transactionResponse.getEmail());
-                    assertEquals(transactionId, transactionResponse.getRequestId());
+                    assertEquals(transactionId, transactionResponse.getTransactionNumber());
                 })
                 .verifyComplete();
     }

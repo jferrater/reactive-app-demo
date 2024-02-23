@@ -6,16 +6,14 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TransactionRequest {
+public class Transaction {
 
-    @JsonProperty("Email")
-    private String email;
-    @JsonProperty("Transaction Number")
-    private String transactionNumber;
-    @JsonProperty("Amount")
-    private Double amount;
     @JsonProperty("First Name")
     private String firstName;
     @JsonProperty("Last Name")
     private String lastName;
+    @JsonProperty("Email")
+    private String email;
+    @JsonProperty("Transaction Number")
+    private String transactionNumber;
 }
