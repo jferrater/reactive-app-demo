@@ -16,10 +16,10 @@ public class UserDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        UserEntity jolly = new UserEntity(UUID.randomUUID(), "jolly.jae@gmail.com", 7000.0);
-        UserEntity keerthi = new UserEntity(UUID.randomUUID(), "keerthi.lee@gmail.com", 100.0);
-        UserEntity wella = new UserEntity(UUID.randomUUID(), "wella.sky@gmail.com", 1200.0);
-        UserEntity hinata = new UserEntity(UUID.randomUUID(), "hinata.shoyo@gmail.com", 500.0);
+        UserEntity jolly = new UserEntity(UUID.randomUUID(), "jolly.jae@gmail.com", "Jolly", "Jae", 7000.0);
+        UserEntity keerthi = new UserEntity(UUID.randomUUID(), "keerthi.lee@gmail.com", "Keerthi", "Lee", 100.0);
+        UserEntity wella = new UserEntity(UUID.randomUUID(), "wella.sky@gmail.com", "Wella", "Sky", 1200.0);
+        UserEntity hinata = new UserEntity(UUID.randomUUID(), "hinata.shoyo@gmail.com", "Hinata", "Soyo", 500.0);
         userRepository.save(jolly).block();
         userRepository.save(keerthi).block();
         userRepository.save(wella).block();

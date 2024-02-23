@@ -8,10 +8,14 @@ import lombok.Data;
 @AllArgsConstructor
 public class TransactionRequest {
 
-    @JsonProperty("email")
+    @JsonProperty("Email")
     private String email;
-    @JsonProperty("request-id")
-    private String requestId;
-    @JsonProperty("amount")
+    @JsonProperty("Transaction Number")
+    private String transactionNumber;
+    @JsonProperty("Amount")
     private Double amount;
+    @JsonProperty("First Name")
+    private String firstName;
+    @JsonProperty("Last Name")
+    private String lastName;
 }

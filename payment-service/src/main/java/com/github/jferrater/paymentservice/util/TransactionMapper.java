@@ -8,7 +8,9 @@ public class TransactionMapper {
     public static TransactionResponse toTransactionResponse(TransactionEntity transactionEntity) {
         TransactionResponse transactionResponse = new TransactionResponse();
         transactionResponse.setEmail(transactionEntity.getEmail());
-        transactionResponse.setRequestId(transactionEntity.getId());
+        transactionResponse.setFirstName(transactionEntity.getFirstname());
+        transactionResponse.setLastName(transactionEntity.getLastName());
+        transactionResponse.setTransactionNumber(transactionEntity.getId());
         transactionResponse.setStatus(transactionEntity.getStatus());
         return transactionResponse;
     }

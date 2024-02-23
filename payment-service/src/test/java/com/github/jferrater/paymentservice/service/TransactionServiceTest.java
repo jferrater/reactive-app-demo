@@ -39,18 +39,20 @@ class TransactionServiceTest {
     @Test
     void testApprovedTransactions() {
         String email = "jolly.jae@gmail.com";
+        String firstName = "Jolly";
+        String lastName = "Jae";
         UUID id = UUID.randomUUID();
-        UserEntity user = new UserEntity(id, email, 1000.0);
+        UserEntity user = new UserEntity(id, email, firstName, lastName, 1000.0);
         when(userRepository.findByEmail(email)).thenReturn(Mono.just(user));
 
-        UserEntity after = new UserEntity(id, email, 500.0);
+        UserEntity after = new UserEntity(id, email, firstName, lastName, 500.0);
         when(userRepository.save(after)).thenReturn(Mono.just(after));
 
 
-        TransactionEntity transactionEntity = new TransactionEntity("TR001", email, 500.0, TransactionStatus.APPROVED.toString());
+        TransactionEntity transactionEntity = new TransactionEntity("TR001", email, firstName, lastName, 500.0, TransactionStatus.APPROVED.toString());
         when(transactionRepository.save(transactionEntity)).thenReturn(Mono.just(transactionEntity));
 
-        TransactionRequest transactionRequest = new TransactionRequest(email, "TR001", 500.0);
+        TransactionRequest transactionRequest = new TransactionRequest(email, "TR001", 500.0, firstName, lastName);
 
         when(userService.updateBalance(transactionRequest)).thenReturn(Mono.just(after));
 
@@ -63,14 +65,16 @@ class TransactionServiceTest {
     @Test
     void testRejectedTransactions() {
         String email = "jolly.jae@gmail.com";
+        String firstName = "Jolly";
+        String lastName = "Jae";
         UUID id = UUID.randomUUID();
-        UserEntity user = new UserEntity(id, email, 300.0); // not enough balance to process the transaction request
+        UserEntity user = new UserEntity(id, email, firstName, lastName, 300.0); // not enough balance to process the transaction request
         when(userRepository.findByEmail(email)).thenReturn(Mono.just(user));
 
-        TransactionEntity transactionEntity = new TransactionEntity("TR001", email, 500.0, TransactionStatus.REJECTED.toString());
+        TransactionEntity transactionEntity = new TransactionEntity("TR001", email, firstName, lastName, 500.0, TransactionStatus.REJECTED.toString());
         when(transactionRepository.save(transactionEntity)).thenReturn(Mono.just(transactionEntity));
 
-        TransactionRequest transactionRequest = new TransactionRequest(email, "TR001", 500.0);
+        TransactionRequest transactionRequest = new TransactionRequest(email, "TR001", 500.0, firstName, lastName);
 
         when(userService.updateBalance(transactionRequest)).thenReturn(Mono.empty());
 
