@@ -54,7 +54,7 @@ class BookingServiceTest {
                 "Hinata,Shoyo,hinata.shoyo@gmail.com,1000,TR003"
                 );
 
-        StepVerifier.create(bookingService.processTransaction(transactionStream))
+        StepVerifier.create(bookingService.getRejectedTransactions(transactionStream))
                 .assertNext(r -> {
                     List<Transaction> rejectedTransactions = r.getRejectedTransactions();
                     assertEquals(2, rejectedTransactions.size());
@@ -93,7 +93,7 @@ class BookingServiceTest {
                 "Hinata,Shoyo,hinata.shoyo@gmail.com,1000,TR003"
         );
 
-        StepVerifier.create(bookingService.processTransaction(transactionStream))
+        StepVerifier.create(bookingService.getRejectedTransactions(transactionStream))
                 .assertNext(r -> {
                     List<Transaction> rejectedTransactions = r.getRejectedTransactions();
                     assertEquals(0, rejectedTransactions.size());

@@ -12,12 +12,14 @@ services:
   booking-service:
     depends_on:
       - mongodb
+      - payment-service
     image: booking-service-app:latest
     ports:
       - "8080:8080"
     environment:
       SPRING_DATA_MONGODB_URI: "mongodb://root:aaa123@mongodb:27017/bookingdb?authSource=admin"
       SPRING_DATA_MONGODB_AUTHENTICATING_DATABASE: "admin"
+      PAYMENT_SERVICE_BASE_URL: "http://payment-service:8081"
   mongodb:
     image: mongo:7.0.5
     restart: always
