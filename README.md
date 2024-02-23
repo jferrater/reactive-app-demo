@@ -84,5 +84,31 @@ This response is sent back to the `booking-service` for approving or rejecting b
 
 
 ### The booking-service app
-TODO - to be implemented
-
+The `booking-service` receives the list of transactions. Each transaction is sent to the `payment-service` to verify
+if the user has enough credit to pay the transaction amount. A list of rejected transactions is returned
+##### POST: `http://localhost:8080/rejected_transactions`
+Body:
+```text
+"Jolly,Jae,jolly.jae@gmail.com,9000,TR001",
+"Wella,Sky,wella.sky@gmail.com,50,TR002",
+"Hinata,Shoyo,hinata.shoyo@gmail.com,1000,TR003"
+```
+Response:
+```json
+{
+    "Rejected Transactions": [
+        {
+            "First Name": "Jolly",
+            "Last Name": "Jae",
+            "Email": "jolly.jae@gmail.com",
+            "Transaction Number": "TR001"
+        },
+        {
+            "First Name": "Hinata",
+            "Last Name": "Shoyo",
+            "Email": "hinata.shoyo@gmail.com",
+            "Transaction Number": "TR003"
+        }
+    ]
+}
+```

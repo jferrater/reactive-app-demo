@@ -9,15 +9,20 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
+
+import java.time.Duration;
 
 @AllArgsConstructor
 @Service
 public class BookingService {
 
     private final PaymentServiceClient paymentServiceClient;
-    public Mono<RejectedTransactionResponse> processTransaction(Flux<String> transactions) {
+    public Mono<RejectedTransactionResponse> getRejectedTransactions(Flux<String> transactions) {
         return transactions.map(this::toTransactionRequest)
+                .log()
                 .flatMap(paymentServiceClient::authorizeTransaction)
+                .retryWhen(Retry.fixedDelay(5, Duration.ofSeconds(1)))
                 .filter(transactionResponse -> "REJECTED".equals(transactionResponse.getStatus()))
                 .map(this::toTransactionDto)
                 .collectList()
