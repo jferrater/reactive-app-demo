@@ -30,12 +30,17 @@ class UserServiceTest {
 
     @Test
     void testUserFindByEmail() {
-        UserEntity user = new UserEntity(UUID.randomUUID(), "jolly.jae@gmail.com", 1000.0);
-        when(userRepository.findByEmail("jolly.jae@gmail.com")).thenReturn(Mono.just(user));
+        String email = "jolly.jae@gmail.com";
+        String firstName = "Jolly";
+        String lastName = "Jae";
+        UserEntity user = new UserEntity(UUID.randomUUID(), email, firstName, lastName, 1000.0);
+        when(userRepository.findByEmail(email)).thenReturn(Mono.just(user));
 
-        StepVerifier.create(userService.findByEmail("jolly.jae@gmail.com"))
+        StepVerifier.create(userService.findByEmail(email))
                 .assertNext( u -> {
-                    assertEquals("jolly.jae@gmail.com", u.getEmail());
+                    assertEquals(email, u.getEmail());
+                    assertEquals(firstName, u.getFirstName());
+                    assertEquals(lastName, u.getLastName());
                     assertEquals(1000.0, u.getBalance());
                 })
                 .verifyComplete();
@@ -44,17 +49,21 @@ class UserServiceTest {
     @Test
     void testUpdateBalance() {
         String email = "jolly.jae@gmail.com";
+        String firstName = "Jolly";
+        String lastName = "Jae";
         UUID id = UUID.randomUUID();
-        UserEntity user = new UserEntity(id, email, 1000.0);
+        UserEntity user = new UserEntity(id, email, firstName, lastName, 1000.0);
         when(userRepository.findByEmail(email)).thenReturn(Mono.just(user));
 
-        UserEntity after = new UserEntity(id, email, 500.0);
+        UserEntity after = new UserEntity(id, email, firstName, lastName, 500.0);
         when(userRepository.save(after)).thenReturn(Mono.just(after));
 
-        TransactionRequest transactionRequest = new TransactionRequest(email, "TR001", 500.0);
+        TransactionRequest transactionRequest = new TransactionRequest(email, "TR001", 500.0, firstName, lastName);
         StepVerifier.create(userService.updateBalance(transactionRequest))
                 .assertNext( u -> {
                     assertEquals(email, u.getEmail());
+                    assertEquals(firstName, u.getFirstName());
+                    assertEquals(lastName, u.getLastName());
                     assertEquals(500.0, u.getBalance());
                 })
                 .verifyComplete();
@@ -62,8 +71,10 @@ class UserServiceTest {
 
     @Test
     void testGetUsers() {
-        UserEntity user1 = new UserEntity(UUID.randomUUID(), "jolly.jae@gmail.com", 1000.0);
-        UserEntity user2 = new UserEntity(UUID.randomUUID(), "kee.pass@gmail.com", 500.0);
+        String firstName = "Jolly";
+        String lastName = "Jae";
+        UserEntity user1 = new UserEntity(UUID.randomUUID(), "jolly.jae@gmail.com", firstName, lastName, 1000.0);
+        UserEntity user2 = new UserEntity(UUID.randomUUID(), "kee.pass@gmail.com", firstName, lastName, 500.0);
         when(userRepository.findAll()).thenReturn(Flux.just(user1, user2));
 
         StepVerifier.create(userService.getUsers())

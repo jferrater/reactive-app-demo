@@ -12,7 +12,6 @@ import reactor.core.publisher.Flux;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest(UserController.class)
@@ -27,8 +26,8 @@ class UserControllerTest {
 
     @Test
     void testGetUsers() {
-        User user1 = new User(UUID.randomUUID().toString(), "jolly.jae@gmail.com", 45.0);
-        User user2 = new User(UUID.randomUUID().toString(), "keerthi.pass@gmail.com", 45.0);
+        User user1 = new User(UUID.randomUUID().toString(), "jolly.jae@gmail.com", "Jolly", "Jae", 45.0);
+        User user2 = new User(UUID.randomUUID().toString(), "keerthi.pass@gmail.com", "Keerthi", "Pass", 45.0);
         when(userService.getUsers()).thenReturn(Flux.just(user1, user2));
 
         webTestClient.get()

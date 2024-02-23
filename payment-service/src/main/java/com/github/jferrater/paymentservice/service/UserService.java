@@ -28,7 +28,7 @@ public class UserService {
     public Mono<UserEntity> updateBalance(TransactionRequest transactionRequest) {
         return this.userRepository.findByEmail(transactionRequest.getEmail())
                 .filter(user -> user.getBalance() > transactionRequest.getAmount())
-                .map(user -> new UserEntity(user.getId(), user.getEmail(), user.getBalance() - transactionRequest.getAmount()))
+                .map(user -> new UserEntity(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getBalance() - transactionRequest.getAmount()))
                 .flatMap(this.userRepository::save);
     }
 
@@ -36,4 +36,5 @@ public class UserService {
         return this.userRepository.findAll()
                 .map(UserMapper::toDto);
     }
+
 }

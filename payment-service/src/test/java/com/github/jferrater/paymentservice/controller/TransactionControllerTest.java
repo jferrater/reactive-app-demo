@@ -30,9 +30,11 @@ class TransactionControllerTest {
     void testApprovedRequest() {
         String requestId = "TR001";
         String email = "jolly.jae@gmail.com";
-        TransactionRequest transactionRequest = new TransactionRequest(email, requestId, 500.0);
+        String firstName = "Jolly";
+        String lastName = "Jae";
+        TransactionRequest transactionRequest = new TransactionRequest(email, requestId, 500.0, firstName, lastName);
         TransactionResponse transactionResponse = new TransactionResponse();
-        transactionResponse.setRequestId(requestId);
+        transactionResponse.setTransactionNumber(requestId);
         transactionResponse.setEmail(email);
         transactionResponse.setStatus(TransactionStatus.APPROVED.toString());
         when(transactionService.createTransaction(transactionRequest)).thenReturn(Mono.just(transactionResponse));
@@ -47,6 +49,6 @@ class TransactionControllerTest {
                 .consumeWith(response -> {
                     assertEquals("APPROVED", response.getResponseBody().getStatus());
                     assertEquals(email, response.getResponseBody().getEmail());
-                });;
+                });
     }
 }

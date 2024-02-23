@@ -20,8 +20,10 @@ public class TransactionService {
     public Mono<TransactionResponse> createTransaction(TransactionRequest transactionRequest) {
         return this.userService.updateBalance(transactionRequest)
                 .map(user -> new TransactionEntity(
-                        transactionRequest.getRequestId(),
+                        transactionRequest.getTransactionNumber(),
                         user.getEmail(),
+                        user.getFirstName(),
+                        user.getLastName(),
                         transactionRequest.getAmount(),
                         TransactionStatus.APPROVED.toString())
                 )
@@ -29,8 +31,10 @@ public class TransactionService {
                 .map(TransactionMapper::toTransactionResponse)
                 .defaultIfEmpty(
                         new TransactionResponse(
-                                transactionRequest.getRequestId(),
+                                transactionRequest.getTransactionNumber(),
                                 transactionRequest.getEmail(),
+                                transactionRequest.getFirstName(),
+                                transactionRequest.getLastName(),
                                 TransactionStatus.REJECTED.toString()
                         )
                 );
