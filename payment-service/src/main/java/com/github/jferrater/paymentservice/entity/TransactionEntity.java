@@ -13,6 +13,8 @@ public class TransactionEntity {
     @Id
     private String id;
     private String email;
+    private String firstname;
+    private String lastName;
     private Double amount;
     private String status;
 }
