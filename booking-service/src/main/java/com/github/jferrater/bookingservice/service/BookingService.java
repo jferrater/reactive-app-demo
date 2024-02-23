@@ -1,36 +1,46 @@
 package com.github.jferrater.bookingservice.service;
 
 import com.github.jferrater.bookingservice.client.PaymentServiceClient;
+import com.github.jferrater.bookingservice.dto.RejectedTransactionResponse;
 import com.github.jferrater.bookingservice.dto.Transaction;
 import com.github.jferrater.bookingservice.dto.TransactionRequest;
 import com.github.jferrater.bookingservice.dto.TransactionResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @AllArgsConstructor
 @Service
 public class BookingService {
 
     private final PaymentServiceClient paymentServiceClient;
-    public Flux<Object> processTransaction(Flux<String> transactions) {
-
+    public Mono<RejectedTransactionResponse> processTransaction(Flux<String> transactions) {
         return transactions.map(this::toTransactionRequest)
                 .flatMap(paymentServiceClient::authorizeTransaction)
-                .filter(transactionResponse -> "APPROVED".equals(transactionResponse.getStatus())
-                .map();
+                .filter(transactionResponse -> "REJECTED".equals(transactionResponse.getStatus()))
+                .map(this::toTransactionDto)
+                .collectList()
+                .map(RejectedTransactionResponse::new);
 
     }
 
     private TransactionRequest toTransactionRequest(String transaction) {
         String[] split = transaction.split(",", 5);
+        String firstName = split[0];
+        String lastName = split[1];
         String email = split[2];
         Double amount = Double.valueOf(split[3]);
         String transactionId = split[4];
-        return new TransactionRequest(email, transactionId, amount);
+        return new TransactionRequest(email, transactionId, amount, firstName, lastName);
     }
 
     private Transaction toTransactionDto(TransactionResponse transactionResponse) {
-
+        return new Transaction(
+                transactionResponse.getFirstName(),
+                transactionResponse.getLastName(),
+                transactionResponse.getEmail(),
+                transactionResponse.getTransactionNumber()
+        );
     }
 }
