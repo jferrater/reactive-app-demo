@@ -9,6 +9,15 @@ services:
     environment:
       SPRING_DATA_MONGODB_URI: "mongodb://root:aaa123@mongodb:27017/paymentdb?authSource=admin"
       SPRING_DATA_MONGODB_AUTHENTICATING_DATABASE: "admin"
+  booking-service:
+    depends_on:
+      - mongodb
+    image: booking-service-app:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_MONGODB_URI: "mongodb://root:aaa123@mongodb:27017/bookingdb?authSource=admin"
+      SPRING_DATA_MONGODB_AUTHENTICATING_DATABASE: "admin"
   mongodb:
     image: mongo:7.0.5
     restart: always
