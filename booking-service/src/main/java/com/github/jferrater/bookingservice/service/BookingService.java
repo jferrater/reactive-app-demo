@@ -22,10 +22,10 @@ public class BookingService {
         return transactions.map(this::toTransactionRequest)
                 .log()
                 .flatMap(paymentServiceClient::authorizeTransaction)
-                .retryWhen(Retry.fixedDelay(5, Duration.ofSeconds(1)))
                 .filter(transactionResponse -> "REJECTED".equals(transactionResponse.getStatus()))
                 .map(this::toTransactionDto)
                 .collectList()
+                .retryWhen(Retry.fixedDelay(5, Duration.ofSeconds(1)))
                 .map(RejectedTransactionResponse::new);
 
     }
